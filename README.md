@@ -7,7 +7,7 @@
 Install from source:
 
 ```bash
-git clone https://github.com/your-username/cyoadip.git
+git clone https://github.com/DelicateIntegral/cyoadip.git
 cd cyoadip
 pip install .
 ```
@@ -36,7 +36,7 @@ RATE_LIMIT: 2
 - `PROJECT_FILE`: The name of the input ICC JSON file containing Discord links.
 - `OUTPUT_FILE`: The name of the output JSON file where updated ICC JSON data will be saved.
 - `IMAGE_FOLDER`: The name of the folder where downloaded images will be stored within `directory_path`.
-- `NEW_PREFIX`: Optional. The new prefix to prepend to updated image URLs.
+- `NEW_PREFIX`: Optional. The new prefix to prepend to updated image URLs. Keep blank if you are uploading `IMAGE_FOLDER` to the neocities or github in same directory as `index.html`
 - `MINIFY`: Optional. Set to `true` to minify the output JSON file.
 - `RATE_LIMIT`: The maximum number of concurrent requests allowed for image download and URL refresh operations. Recommended 2 for now.
 
