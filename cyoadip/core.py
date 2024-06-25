@@ -4,6 +4,8 @@ import json
 import re
 import asyncio
 import aiohttp
+import yaml
+import argparse
 from PIL import Image
 
 def read_json(file_path):
@@ -97,19 +99,32 @@ def update_urls(json_data, url_map):
     return json_data
 
 async def main():
-    # Default values
-    directory_path = os.getcwd()
-    TOKEN = 'YOUR TOKEN'
-    PROJECT_FILE = 'project.json'
-    OUTPUT_FILE = 'project_new.json'
-    IMAGE_FOLDER = 'images'
-    NEW_PREFIX = ''  # Replace with your new prefix
-    PROJECT_PATH = os.path.join(directory_path,PROJECT_FILE)
-    IMAGE_PATH = os.path.join(directory_path, IMAGE_FOLDER)
-    OUTPUT_PATH = os.path.join(directory_path, OUTPUT_FILE)
-    MINIFY = False # turn true to minify output json
-    RATE_LIMIT = 2
-    if(os.path.exists(OUTPUT_PATH)):
+    # Argument parsing
+    parser = argparse.ArgumentParser(description='Process some images.')
+    parser.add_argument('--config', type=str, default=None, help='Path to the configuration YAML file')
+    args = parser.parse_args()
+
+    if args.config is None:
+        args.config = os.path.join(os.getcwd(), 'config.yaml')
+
+    # Read configurations from YAML file
+    with open(args.config, 'r') as yaml_file:
+        config = yaml.safe_load(yaml_file)
+
+    # Extract variables from the config
+    DIRECTORY_PATH = config.get('DIRECTORY_PATH', os.getcwd())
+    TOKEN = config.get('TOKEN', 'YOUR TOKEN')
+    PROJECT_FILE = config.get('PROJECT_FILE', 'project.json')
+    OUTPUT_FILE = config.get('OUTPUT_FILE', 'project_new.json')
+    IMAGE_FOLDER = config.get('IMAGE_FOLDER', 'images')
+    NEW_PREFIX = config.get('NEW_PREFIX', '')
+    PROJECT_PATH = os.path.join(DIRECTORY_PATH, PROJECT_FILE)
+    IMAGE_PATH = os.path.join(DIRECTORY_PATH, IMAGE_FOLDER)
+    OUTPUT_PATH = os.path.join(DIRECTORY_PATH, OUTPUT_FILE)
+    MINIFY = config.get('MINIFY', False)
+    RATE_LIMIT = config.get('RATE_LIMIT', 2)
+
+    if os.path.exists(OUTPUT_PATH):
         os.remove(OUTPUT_PATH)
     
     os.makedirs(IMAGE_PATH, exist_ok=True)

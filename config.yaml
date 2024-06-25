@@ -1,0 +1,8 @@
+directory_path: ""
+TOKEN: "YOUR TOKEN"
+PROJECT_FILE: "project.json"
+OUTPUT_FILE: "project_new.json"
+IMAGE_FOLDER: "images"
+NEW_PREFIX: ""
+MINIFY: False
+RATE_LIMIT: 2
