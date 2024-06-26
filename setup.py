@@ -4,9 +4,9 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='cyoadip',
-    version='0.1.0',
-    description='A module to refresh urls of images linked to discord in ICC jsons',
+    name='cyoatools',
+    version='0.2.0',
+    description='Tools to mess with ICC jsons',
     author='DelicateIntegral',
     author_email='',
     long_description=long_description,
@@ -20,7 +20,7 @@ setup(
         ],
     entry_points={
         'console_scripts': [
-            'cyoadip=cyoadip.run:run_main',
+            'cyoatools=cyoatools.run:run_main',
         ],
     },
     classifiers=[

@@ -1,5 +1,5 @@
 import asyncio
-from cyoadip.core import main
+from cyoatools.core import main
 
 def run_main():
     # Run main function in asyncio event loop

@@ -1,8 +1,9 @@
-directory_path: ""
+DIRECTORY_PATH: ""
 TOKEN: "YOUR TOKEN"
 PROJECT_FILE: "project.json"
 OUTPUT_FILE: "project_new.json"
 IMAGE_FOLDER: "images"
+IMAGE_QUALITY: 90
 NEW_PREFIX: ""
-MINIFY: False
+MINIFY: True
 RATE_LIMIT: 2
