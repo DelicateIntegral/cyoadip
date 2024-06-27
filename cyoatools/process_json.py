@@ -23,7 +23,7 @@ def get_urls(json_data, DISCORD_MODE = False):
             choice_id = data.get("id")
             imageLink = data.get("imageLink", "")
             if choice_id is not None:
-                if not DISCORD_MODE:
+                if not DISCORD_MODE and "http" in imageLink and not "discordapp" in imageLink:
                     urls[choice_id] = data["imageLink"]
                 elif "discordapp" in imageLink:
                     urls[choice_id] = data["imageLink"]

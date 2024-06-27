@@ -60,13 +60,13 @@ async def main():
         new_urls = await process_base64(data, IMAGE_PATH, IMAGE_FOLDER, IMAGE_QUALITY, OVERWRITE_IMAGES)
         update_urls(data, new_urls)
 
-    if UPDATE_PREFIXES:
-        data = update_prefixes(data, NEW_PREFIX, OLD_PREFIX)
-
-    if DOWNLOAD_IMAGES and not PROCESS_DISCORD_LINKS:
+    if DOWNLOAD_IMAGES:
         urls = get_urls(data)
         new_urls = await process_images(urls, IMAGE_PATH, IMAGE_QUALITY, RATE_LIMIT, OVERWRITE_IMAGES)
         update_urls(data, new_urls)
+    
+    if UPDATE_PREFIXES:
+        data = update_prefixes(data, NEW_PREFIX, OLD_PREFIX)
     
     print("writing output json...")
     write_json(OUTPUT_PATH, data, MINIFY)
