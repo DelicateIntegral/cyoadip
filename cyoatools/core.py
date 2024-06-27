@@ -62,7 +62,7 @@ async def main():
 
     if DOWNLOAD_IMAGES:
         urls = get_urls(data)
-        new_urls = await process_images(urls, IMAGE_PATH, IMAGE_QUALITY, RATE_LIMIT, OVERWRITE_IMAGES)
+        new_urls = await process_images(urls, IMAGE_PATH, IMAGE_QUALITY, RATE_LIMIT, IMAGE_FOLDER, OVERWRITE_IMAGES)
         update_urls(data, new_urls)
     
     if UPDATE_PREFIXES:
