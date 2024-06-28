@@ -2,9 +2,8 @@ import os
 import asyncio
 import yaml
 import argparse
-from rich.console import Console
-from cyoatools.process_json import read_json, write_json, process_base64, update_prefixes, get_urls, update_urls
-from cyoatools.process_image import process_images
+from cyoatools.process_json import read_json, write_json, process_base64, update_prefixes, get_urls, update_urls, disable_images
+from cyoatools.process_image import process_images, console
 from cyoatools.process_discord import process_discord
 
 async def main():
@@ -36,27 +35,34 @@ async def main():
     PROJECT_FILE = config.get('PROJECT_FILE', 'project.json')
     OUTPUT_FILE = config.get('OUTPUT_FILE', 'project_new.json')
     MINIFY = config.get('MINIFY', False)
+    DISABLE_IMAGES = config.get('DISABLE_IMAGES', False)
     
 
     PROJECT_PATH = os.path.join(DIRECTORY_PATH, PROJECT_FILE)
     IMAGE_PATH = os.path.join(DIRECTORY_PATH, IMAGE_FOLDER)
     OUTPUT_PATH = os.path.join(DIRECTORY_PATH, OUTPUT_FILE)
     
-    console = Console()
+    console.print("[blue]Reading JSON Data...")
+    data = read_json(PROJECT_PATH)
+
+    if data == "Error: File not found":
+        console.print("[bold red]Error: File not found")
+        return
 
     if os.path.exists(OUTPUT_PATH):
-        console.print("[bold red] Removing Existing Output JSON...")
+        console.print("[bold red]Removing Existing Output JSON...")
         os.remove(OUTPUT_PATH)
-    
-    console.print("[blue] Checking/Creating Image Folder...")
+
+    if DISABLE_IMAGES:
+        data = disable_images(data)
+        write_json(OUTPUT_PATH, data, MINIFY)
+        return
+
+    console.print("[blue]Checking/Creating Image Folder...")
     os.makedirs(IMAGE_PATH, exist_ok=True)
     
-    console.print("[blue] Reading JSON Data...")
-    data = read_json(PROJECT_PATH)
-    # print("processing...")
-
     if PROCESS_DISCORD_LINKS:
-        console.print("[blue] Processing Discord Links...")
+        console.print("[blue]Processing Discord Links...")
         data = await process_discord(data, DOWNLOAD_IMAGES, TOKEN, OVERWRITE_IMAGES, RATE_LIMIT, IMAGE_FOLDER, IMAGE_QUALITY, IMAGE_PATH)
     
     if PROCESS_BASE64_IMAGES:
