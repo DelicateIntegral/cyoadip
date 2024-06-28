@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='cyoatools',
-    version='0.2.0',
+    version='0.3.0',
     description='Tools to mess with ICC jsons',
     author='DelicateIntegral',
     author_email='',
@@ -16,7 +16,8 @@ setup(
     install_requires=[
         'pyyaml',
         'aiohttp',
-        'Pillow'
+        'Pillow',
+        'rich'
         ],
     entry_points={
         'console_scripts': [

@@ -2,6 +2,7 @@ import os
 import asyncio
 import yaml
 import argparse
+from rich.console import Console
 from cyoatools.process_json import read_json, write_json, process_base64, update_prefixes, get_urls, update_urls
 from cyoatools.process_image import process_images
 from cyoatools.process_discord import process_discord
@@ -41,19 +42,21 @@ async def main():
     IMAGE_PATH = os.path.join(DIRECTORY_PATH, IMAGE_FOLDER)
     OUTPUT_PATH = os.path.join(DIRECTORY_PATH, OUTPUT_FILE)
     
+    console = Console()
+
     if os.path.exists(OUTPUT_PATH):
-        print("removing existing output json file...")
+        console.print("[bold red] Removing Existing Output JSON...")
         os.remove(OUTPUT_PATH)
     
-    print("checking/creating image folder...")
+    console.print("[blue] Checking/Creating Image Folder...")
     os.makedirs(IMAGE_PATH, exist_ok=True)
     
-    print("reading json data...")
+    console.print("[blue] Reading JSON Data...")
     data = read_json(PROJECT_PATH)
-    print("processing...")
+    # print("processing...")
 
     if PROCESS_DISCORD_LINKS:
-        print("processing discord links...")
+        console.print("[blue] Processing Discord Links...")
         data = await process_discord(data, DOWNLOAD_IMAGES, TOKEN, OVERWRITE_IMAGES, RATE_LIMIT, IMAGE_FOLDER, IMAGE_QUALITY, IMAGE_PATH)
     
     if PROCESS_BASE64_IMAGES:
@@ -68,7 +71,6 @@ async def main():
     if UPDATE_PREFIXES:
         data = update_prefixes(data, NEW_PREFIX, OLD_PREFIX)
     
-    print("writing output json...")
     write_json(OUTPUT_PATH, data, MINIFY)
 
 if __name__ == "__main__":

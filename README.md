@@ -19,7 +19,7 @@ To use `cyoatools`, you need to provide a configuration YAML file (`config.yaml`
 ### Configuration Parameters
 
 - `DIRECTORY_PATH`: Optional.The directory path where the JSON file (`PROJECT_FILE`) and output JSON (`OUTPUT_FILE`) will be stored, and where the `IMAGE_FOLDER` for downloaded images will reside. Default is current working directory.
-- `PROCESS_DISCORD_LINKS`: Optional. If set to `True`, it will process Discord links present in the JSON. Default is `False`. If `DOWNLOAD_IMAGES` is `True`, it will download images to `IMAGE_FOLDER` and update links like this: `IMAGE_FOLDER/image_name`. Otherwise, it will just refresh URLs and replace old ones. 
+- `PROCESS_DISCORD_LINKS`: Optional. If set to `True`, it will process Discord links present in the JSON. Default is `False`. If `DOWNLOAD_IMAGES` is `True`, it will download images to `IMAGE_FOLDER` and update links like this: `IMAGE_FOLDER/image_name`. Otherwise, it will just refresh URLs and replace old ones.
 - `TOKEN`: Optional but required if `PROCESS_DISCORD_LINKS` is `True`. Default is `YOUR TOKEN`. Your Discord bot token required for authentication with Discord's API.
 - `PROJECT_FILE`: Optional. Default is `project.json`. The name of the input ICC JSON file containing Discord links.
 - `OUTPUT_FILE`: Optional. Default is `project_new.json`. The name of the output JSON file where updated ICC JSON data will be saved.
@@ -35,6 +35,7 @@ To use `cyoatools`, you need to provide a configuration YAML file (`config.yaml`
 - `OVERWRITE_IMAGES`: Optional. Default is `False`. If set to `True`, it will overwrite existing images in `IMAGE_FOLDER` otherwise skip pre-existing webp images.
 
 ### Example Usage
+
 ```yaml
 # Example config.yaml
 
@@ -55,7 +56,6 @@ DOWNLOAD_IMAGES: True
 OVERWRITE_IMAGES: False
 ```
 
-
 ```bash
 cyoatools --config="/home/myusername/cyoas/mycyoa/config.yaml"
 ```
@@ -65,6 +65,7 @@ cyoatools --config="/home/myusername/cyoas/mycyoa/config.yaml"
 ## Output
 
 After running `cyoatools` with the above example configuration, it will:
+
 - Process `config.yaml` and get config values
 - Read the `project.json` file
 - Process discord links as it is `True`. It traverses json file and generates the `choice id : url` map.
