@@ -29,11 +29,12 @@ To use `cyoatools`, you need to provide a configuration YAML file (`config.yaml`
 - `OLD_PREFIX`: Optional. Default is `""`. The old prefix to replace in image URLs. When it is not blank, only those urls which contain the `OLD_PREFIX` are changed to `NEW_PREFIX`.
 - `NEW_PREFIX`: Optional. Default is `""`. The new prefix to prepend to updated image URLs. Leave blank if you are uploading `IMAGE_FOLDER` to Neocities or GitHub in the same directory as `index.html`.
 - `MINIFY`: Optional. Default is `False`. Set to `True` to minify the output JSON file.
-- `RATE_LIMIT`: Optional. Default is `2`. The maximum number of concurrent requests allowed for image download and URL refresh operations. Recommended 2 for discord link processing due to its api's rate limiting issue.
+- `RATE_LIMIT`: Optional. Default is `2`. The maximum number of concurrent requests allowed for Discord URL refresh operations. Recommended to skip this option in the config and leave it at default value.
 - `PROCESS_BASE64_IMAGES`: Optional. Default is `False`. If set to `True`, it will process base64 encoded images in the JSON, converting them to webp and storing to `IMAGE_FOLDER` and updating links like this: `IMAGE_FOLDER/image_name`.  You can provide `NEW_PREFIX` and set `UPDATE_PREFIXES` to `True` to update links to this: `NEW_PREFIX/IMAGE_FOLDER/image_name`.
 - `DOWNLOAD_IMAGES`: Optional. Default is `False`. If set to `True`, it will download images linked in the JSON to `IMAGE_FOLDER` and updating links like this: `IMAGE_FOLDER/image_name`. You can provide `NEW_PREFIX` and set `UPDATE_PREFIXES` to `True` to update links to this: `NEW_PREFIX/IMAGE_FOLDER/image_name`.
 - `OVERWRITE_IMAGES`: Optional. Default is `False`. If set to `True`, it will overwrite existing images in `IMAGE_FOLDER` otherwise skip pre-existing webp images.
 - `DISABLE_IMAGES`: Optional. Default is `False`. If set to `True`, it will disable all images in the JSON and exit. All other parameters beside `DIRECTORY_PATH, PROJECT_FILE, OUTPUT_FILE, MINIFY` are ignored.
+- `DOWNLOAD_RATE_LIMIT`: Optional. Default is `5`. The maximum number of concurrent requests allowed when downloading images. Recommended to keep below `10`.
 
 ### Example Usage
 

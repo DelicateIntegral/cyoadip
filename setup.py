@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='cyoatools',
-    version='0.3.0',
+    version='0.4.0',
     description='Tools to mess with ICC jsons',
     author='DelicateIntegral',
     author_email='',

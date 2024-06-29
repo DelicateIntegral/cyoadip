@@ -36,6 +36,7 @@ async def main():
     OUTPUT_FILE = config.get('OUTPUT_FILE', 'project_new.json')
     MINIFY = config.get('MINIFY', False)
     DISABLE_IMAGES = config.get('DISABLE_IMAGES', False)
+    DOWNLOAD_RATE_LIMIT = config.get('DOWNLOAD_RATE_LIMIT', 5)
 
     PROJECT_PATH = os.path.join(DIRECTORY_PATH, PROJECT_FILE)
     IMAGE_PATH = os.path.join(DIRECTORY_PATH, IMAGE_FOLDER)
@@ -62,7 +63,7 @@ async def main():
     
     if PROCESS_DISCORD_LINKS:
         console.print("[blue]Processing Discord Links...")
-        data = await process_discord(data, DOWNLOAD_IMAGES, TOKEN, OVERWRITE_IMAGES, RATE_LIMIT, IMAGE_FOLDER, IMAGE_QUALITY, IMAGE_PATH)
+        data = await process_discord(data, DOWNLOAD_IMAGES, TOKEN, OVERWRITE_IMAGES, RATE_LIMIT, IMAGE_FOLDER, IMAGE_QUALITY, IMAGE_PATH, DOWNLOAD_RATE_LIMIT)
     
     if PROCESS_BASE64_IMAGES:
         new_urls = await process_base64(data, IMAGE_PATH, IMAGE_FOLDER, IMAGE_QUALITY, OVERWRITE_IMAGES)
@@ -73,7 +74,7 @@ async def main():
         if (len(urls)) == 0:
             console.print("[bold red]No other URLs found, skipping")
         else:
-            new_urls = await process_images(urls, IMAGE_PATH, IMAGE_QUALITY, RATE_LIMIT, IMAGE_FOLDER, OVERWRITE_IMAGES)
+            new_urls = await process_images(urls, IMAGE_PATH, IMAGE_QUALITY, IMAGE_FOLDER, OVERWRITE_IMAGES, DOWNLOAD_RATE_LIMIT)
             update_urls(data, new_urls)
     
     if UPDATE_PREFIXES:

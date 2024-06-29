@@ -40,12 +40,12 @@ async def process_refresh(urls, TOKEN, RATE_LIMIT):
     new_urls = {k:v for r in results for k, v in r.items()}
     return new_urls
 
-async def process_discord(data, DOWNLOAD_IMAGES, TOKEN, OVERWRITE_IMAGES, RATE_LIMIT, IMAGE_FOLDER, IMAGE_QUALITY, IMAGE_PATH):
+async def process_discord(data, DOWNLOAD_IMAGES, TOKEN, OVERWRITE_IMAGES, RATE_LIMIT, IMAGE_FOLDER, IMAGE_QUALITY, IMAGE_PATH, DOWNLOAD_RATE_LIMIT):
     urls = get_urls(data, True)
     new_urls = await process_refresh(urls, TOKEN, RATE_LIMIT)
 
     if DOWNLOAD_IMAGES:
-        new_urls = await process_images(new_urls, IMAGE_PATH, IMAGE_QUALITY, RATE_LIMIT, IMAGE_FOLDER, OVERWRITE_IMAGES)
+        new_urls = await process_images(new_urls, IMAGE_PATH, IMAGE_QUALITY, IMAGE_FOLDER, OVERWRITE_IMAGES, DOWNLOAD_RATE_LIMIT)
     
     discord_data = update_urls(data, new_urls)
     return discord_data
