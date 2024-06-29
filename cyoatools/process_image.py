@@ -21,28 +21,31 @@ async def download_image(session, url, key, semaphore, IMAGE_PATH, IMAGE_FOLDER,
     async with semaphore:
         image_name = f'image_{key}.webp'
         image_path = os.path.join(IMAGE_PATH, image_name)
-
-        if not os.path.exists(image_path) or OVERWRITE_IMAGES:
+        
+        if (not os.path.exists(image_path)) or OVERWRITE_IMAGES:
             async with session.get(url) as response:
                 if response.status == 200:
                     image = await response.read()
-                    # print(f"saving image {key}")
                     await save_images(image, key, image_path, IMAGE_QUALITY, OVERWRITE_IMAGES)
                 else:
-                    console.print(f"[bold red]Failed to download image: {url}")
+                    console.print(f"[bold red]Failed to download image for choice id {key}: {url}")
+        else:
+            console.print("Skipping download since OVERWRITE_IMAGES is False and image already exists")
 
         url = f'{IMAGE_FOLDER}/{image_name}'
         return {key: url}
 
 async def save_images(image, key, image_path, IMAGE_QUALITY, OVERWRITE_IMAGES):
-    if os.path.exists(image_path) and not OVERWRITE_IMAGES:
-        return
+    if os.path.exists(image_path):
+        if OVERWRITE_IMAGES:
+            os.remove(image_path)
+        else:
+            return
     image = Image.open(io.BytesIO(image)).convert("RGB")
     image.save(image_path, format='WEBP', quality=IMAGE_QUALITY)
 
 async def process_images(urls, IMAGE_PATH, IMAGE_QUALITY, RATE_LIMIT, IMAGE_FOLDER, OVERWRITE_IMAGES):
     semaphore = asyncio.Semaphore(RATE_LIMIT)
-
     async with aiohttp.ClientSession() as session:
         tasks = [download_image(session, url, key, semaphore, IMAGE_PATH, IMAGE_FOLDER, IMAGE_QUALITY, OVERWRITE_IMAGES) for key, url in urls.items()]
         
@@ -53,7 +56,7 @@ async def process_images(urls, IMAGE_PATH, IMAGE_QUALITY, RATE_LIMIT, IMAGE_FOLD
             SpinnerColumn(style="bold dark_green"),
             TextColumn("{task.percentage:>3.0f}%", style="bold dark_green")
         ) as progress:
-            task = progress.add_task("Processing Image URLs", total=len(tasks))
+            task = progress.add_task("Downloading Images", total=len(tasks))
             results = []
             for result in asyncio.as_completed(tasks):
                 results.append(await result)

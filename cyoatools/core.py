@@ -36,7 +36,6 @@ async def main():
     OUTPUT_FILE = config.get('OUTPUT_FILE', 'project_new.json')
     MINIFY = config.get('MINIFY', False)
     DISABLE_IMAGES = config.get('DISABLE_IMAGES', False)
-    
 
     PROJECT_PATH = os.path.join(DIRECTORY_PATH, PROJECT_FILE)
     IMAGE_PATH = os.path.join(DIRECTORY_PATH, IMAGE_FOLDER)
@@ -71,8 +70,11 @@ async def main():
 
     if DOWNLOAD_IMAGES:
         urls = get_urls(data)
-        new_urls = await process_images(urls, IMAGE_PATH, IMAGE_QUALITY, RATE_LIMIT, IMAGE_FOLDER, OVERWRITE_IMAGES)
-        update_urls(data, new_urls)
+        if (len(urls)) == 0:
+            console.print("[bold red]No other URLs found, skipping")
+        else:
+            new_urls = await process_images(urls, IMAGE_PATH, IMAGE_QUALITY, RATE_LIMIT, IMAGE_FOLDER, OVERWRITE_IMAGES)
+            update_urls(data, new_urls)
     
     if UPDATE_PREFIXES:
         data = update_prefixes(data, NEW_PREFIX, OLD_PREFIX)
