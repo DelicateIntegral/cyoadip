@@ -28,10 +28,9 @@ async def download_image(session, url, key, semaphore, IMAGE_PATH, IMAGE_FOLDER,
                     image = await response.read()
                     await save_images(image, key, image_path, IMAGE_QUALITY, OVERWRITE_IMAGES)
                 else:
-                    console.print(f"[bold red]Failed to download image for choice id {key}: {url}")
-        else:
-            console.print("Skipping download since OVERWRITE_IMAGES is False and image already exists")
-
+                    console.print(f"[bold red]Failed to download image for choice id {key}: {url}, status: {response.status}")
+                    return {key: url}
+        
         url = f'{IMAGE_FOLDER}/{image_name}'
         return {key: url}
 

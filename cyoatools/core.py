@@ -22,7 +22,7 @@ async def main():
     # Extract variables from the config
     DIRECTORY_PATH = config.get('DIRECTORY_PATH', os.getcwd())
     PROCESS_DISCORD_LINKS = config.get('PROCESS_DISCORD_LINKS', False)
-    TOKEN = config.get('TOKEN', 'YOUR TOKEN')
+    TOKEN = config.get('TOKEN', '')
     PROCESS_BASE64_IMAGES = config.get('PROCESS_BASE64_IMAGES', False)
     OLD_PREFIX = config.get('OLD_PREFIX', '')
     NEW_PREFIX = config.get('NEW_PREFIX', '')

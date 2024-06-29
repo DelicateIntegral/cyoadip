@@ -27,10 +27,10 @@ def get_urls(json_data, DISCORD_MODE = False):
             choice_id = data.get("id")
             imageLink = data.get("imageLink", "")
             if choice_id is not None:
-                if not DISCORD_MODE and "http" in imageLink and not "discordapp" in imageLink:
-                    urls[choice_id] = data["imageLink"]
-                elif "discordapp" in imageLink:
-                    urls[choice_id] = data["imageLink"]
+                if DISCORD_MODE and "discordapp" in imageLink:
+                    urls[choice_id] = imageLink
+                elif not DISCORD_MODE and "http" in imageLink and "discordapp" not in imageLink:
+                    urls[choice_id] = imageLink
             for key, value in data.items():
                 if isinstance(value, dict) or isinstance(value, list):
                     traverse(value)
