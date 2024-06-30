@@ -1,6 +1,9 @@
 import asyncio
 import aiohttp
 from rich.progress import Progress, BarColumn, TextColumn, SpinnerColumn
+from rich.layout import Layout
+from rich.panel import Panel
+from rich.live import Live
 from cyoatools.process_json import get_urls, update_urls
 from cyoatools.process_image import process_images, console
 
@@ -24,18 +27,21 @@ async def process_refresh(urls, TOKEN, RATE_LIMIT):
     async with aiohttp.ClientSession() as session:
         tasks = [refresh_url(session, url, key, TOKEN, semaphore) for key, url in urls.items()]
 
-        with Progress(
+        task_progress = Progress(
             TextColumn("{task.description}", justify="left", style="bold dark_orange3"),
             BarColumn(bar_width=40, style="bold red", complete_style="bold blue", finished_style="bold blue"),
             TextColumn("{task.completed}/{task.total}", style="bold dark_orange3"),
             SpinnerColumn(style="bold dark_green"),
             TextColumn("{task.percentage:>3.0f}%", style="bold dark_green")
-        ) as progress:
-            task = progress.add_task("Refreshing URLs", total=len(tasks))
+        )
+    
+        task = task_progress.add_task("Refreshing URLs", total=len(tasks))
+
+        with Live(Panel(Layout(task_progress), border_style="bold blue", width=80, height=3, style="bold blue"), refresh_per_second=10, vertical_overflow="visible"):
             results = []
             for result in asyncio.as_completed(tasks):
                 results.append(await result)
-                progress.update(task, advance=1)
+                task_progress.update(task, advance=1)
 
     new_urls = {k:v for r in results for k, v in r.items()}
     return new_urls
